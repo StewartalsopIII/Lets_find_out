@@ -2,98 +2,94 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] bg-black text-[#4cbb17]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        <h1 className="text-4xl font-bold text-[#4cbb17] mb-4">Beetlejuice's Guide to the 1850 Liberal Revolutions</h1>
         <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
+          className="invert"
+          src="/beetlejuice.png"
+          alt="Beetlejuice"
           width={180}
-          height={38}
+          height={180}
           priority
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
+        <ol className="list-inside text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]" style={{ listStyleType: 'lower-roman' }}>
           <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
+            The 1850 Liberal Revolutions were a series of uprisings across Europe.
           </li>
-          <li>Save and see your changes instantly.</li>
+          <li className="mb-2">
+            They were sparked by discontent with conservative monarchies and a desire for liberal reforms.
+          </li>
+          <li className="mb-2">
+            Key countries involved included France, Germany, Italy, and the Austrian Empire.
+          </li>
+          <li>The revolutions ultimately failed but laid groundwork for future changes.</li>
         </ol>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            className="rounded-full border border-solid border-[#4cbb17] transition-colors flex items-center justify-center bg-[#4cbb17] text-black gap-2 hover:bg-black hover:text-[#4cbb17] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+            href="https://en.wikipedia.org/wiki/Revolutions_of_1848"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
+            Learn More About the Revolutions
           </a>
           <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            className="rounded-full border border-solid border-[#4cbb17] transition-colors flex items-center justify-center hover:bg-[#4cbb17] hover:text-black text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
+            href="https://en.wikipedia.org/wiki/Beetlejuice"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Read our docs
+            Who is Beetlejuice?
           </a>
         </div>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          href="https://en.wikipedia.org/wiki/French_Revolution_of_1848"
           target="_blank"
           rel="noopener noreferrer"
         >
           <Image
             aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
+            src="/french-flag.png"
+            alt="French Flag"
             width={16}
             height={16}
           />
-          Learn
+          French Revolution of 1848
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          href="https://en.wikipedia.org/wiki/German_revolutions_of_1848%E2%80%931849"
           target="_blank"
           rel="noopener noreferrer"
         >
           <Image
             aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
+            src="/german-flag.png"
+            alt="German Flag"
             width={16}
             height={16}
           />
-          Examples
+          German Revolutions
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          href="https://en.wikipedia.org/wiki/Revolutions_of_1848_in_the_Italian_states"
           target="_blank"
           rel="noopener noreferrer"
         >
           <Image
             aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
+            src="/italian-flag.png"
+            alt="Italian Flag"
             width={16}
             height={16}
           />
-          Go to nextjs.org →
+          Italian Revolutions →
         </a>
       </footer>
     </div>
