@@ -1,4 +1,4 @@
-import { EmojiMaker } from './components/EmojiMaker';
+import { EmojiMaker } from '@/components/EmojiMaker';
 
 export default function Home() {
   return (
