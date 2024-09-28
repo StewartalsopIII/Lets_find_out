@@ -1,17 +1,19 @@
-"use client";
+'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
-import { Download, Heart } from 'lucide-react';
+import { EmojiGrid } from './EmojiGrid';
 
 export function EmojiMaker() {
   const [prompt, setPrompt] = useState('');
-  const [generatedEmojis, setGeneratedEmojis] = useState<string[]>([]);
+  const [generatedEmojis, setGeneratedEmojis] = useState<Array<{ url: string; likes: number }>>([]);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const generateEmoji = async () => {
+  const generateEmoji = useCallback(async () => {
+    if (!prompt.trim()) return;
+
     setIsGenerating(true);
     try {
       const response = await fetch('/api/generate-emoji', {
@@ -19,23 +21,34 @@ export function EmojiMaker() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
       });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate emoji');
+      }
+
       const data = await response.json();
-      setGeneratedEmojis(prevEmojis => [...prevEmojis, data.output[0]]);
+      setGeneratedEmojis((prevEmojis) => [{ url: data.output[0], likes: 0 }, ...prevEmojis]);
     } catch (error) {
       console.error('Error generating emoji:', error);
+    } finally {
+      setIsGenerating(false);
     }
-    setIsGenerating(false);
-  };
+  }, [prompt]);
 
-  const handleDownload = (emoji: string) => {
+  const handleDownload = useCallback((url: string) => {
     // Implement download functionality
-    console.log('Downloading:', emoji);
-  };
+    console.log('Downloading:', url);
+  }, []);
 
-  const handleLike = (emoji: string) => {
-    // Implement like functionality
-    console.log('Liking:', emoji);
-  };
+  const handleLike = useCallback((index: number) => {
+    setGeneratedEmojis((prevEmojis) =>
+      prevEmojis.map((emoji, i) =>
+        i === index ? { ...emoji, likes: emoji.likes + 1 } : emoji
+      )
+    );
+  }, []);
+
+  const latestEmoji = generatedEmojis[0];
 
   return (
     <div className="w-full max-w-3xl mx-auto">
@@ -47,41 +60,28 @@ export function EmojiMaker() {
           onChange={(e) => setPrompt(e.target.value)}
           className="flex-grow"
         />
-        <Button onClick={generateEmoji} disabled={isGenerating}>
-          Generate
+        <Button onClick={generateEmoji} disabled={isGenerating || !prompt.trim()}>
+          {isGenerating ? 'Generating...' : 'Generate'}
         </Button>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {generatedEmojis.map((emoji, index) => (
-          <div key={index} className="relative group w-32 h-32">
+      {latestEmoji && (
+        <div className="mb-8">
+          <div className="relative w-64 h-64 mx-auto">
             <Image
-              src={emoji}
-              alt={`Generated emoji ${index + 1}`}
+              src={latestEmoji.url}
+              alt="Latest generated emoji"
               layout="fill"
               objectFit="cover"
               className="rounded-lg"
             />
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-50 rounded-lg">
-              <Button
-                variant="secondary"
-                size="icon"
-                className="mr-2 bg-white text-black hover:bg-gray-200"
-                onClick={() => handleDownload(emoji)}
-              >
-                <Download className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="secondary"
-                size="icon"
-                className="bg-white text-black hover:bg-gray-200"
-                onClick={() => handleLike(emoji)}
-              >
-                <Heart className="h-4 w-4" />
-              </Button>
-            </div>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+      <EmojiGrid
+        emojis={generatedEmojis}
+        onDownload={handleDownload}
+        onLike={handleLike}
+      />
     </div>
   );
 }
