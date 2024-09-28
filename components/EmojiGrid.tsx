@@ -3,19 +3,17 @@ import { EmojiItem } from './EmojiItem';
 
 interface EmojiGridProps {
   emojis: Array<{ url: string; likes: number }>;
-  onDownload: (url: string) => void;
-  onLike: (index: number) => void;
+  onLike: (index: number, newLikes: number) => void;
 }
 
-export const EmojiGrid: React.FC<EmojiGridProps> = ({ emojis, onDownload, onLike }) => {
+export const EmojiGrid: React.FC<EmojiGridProps> = ({ emojis, onLike }) => {
   return (
     <div className="emoji-grid">
       {emojis.map((emoji, index) => (
         <EmojiItem
           key={index}
           emoji={emoji}
-          onDownload={() => onDownload(emoji.url)}
-          onLike={() => onLike(index)}
+          onLike={(newLikes) => onLike(index, newLikes)}
         />
       ))}
     </div>

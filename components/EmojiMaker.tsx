@@ -40,10 +40,10 @@ export function EmojiMaker() {
     console.log('Downloading:', url);
   }, []);
 
-  const handleLike = useCallback((index: number) => {
+  const handleLike = useCallback((index: number, newLikes: number) => {
     setGeneratedEmojis((prevEmojis) =>
       prevEmojis.map((emoji, i) =>
-        i === index ? { ...emoji, likes: emoji.likes + 1 } : emoji
+        i === index ? { ...emoji, likes: newLikes } : emoji
       )
     );
   }, []);
@@ -79,7 +79,6 @@ export function EmojiMaker() {
       )}
       <EmojiGrid
         emojis={generatedEmojis}
-        onDownload={handleDownload}
         onLike={handleLike}
       />
     </div>
