@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
+import { Download, Heart } from 'lucide-react';
 
 export function EmojiMaker() {
   const [prompt, setPrompt] = useState('');
@@ -26,6 +27,16 @@ export function EmojiMaker() {
     setIsGenerating(false);
   };
 
+  const handleDownload = (emoji: string) => {
+    // Implement download functionality
+    console.log('Downloading:', emoji);
+  };
+
+  const handleLike = (emoji: string) => {
+    // Implement like functionality
+    console.log('Liking:', emoji);
+  };
+
   return (
     <div className="w-full max-w-3xl mx-auto">
       <div className="flex gap-2 mb-8">
@@ -40,22 +51,32 @@ export function EmojiMaker() {
           Generate
         </Button>
       </div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {generatedEmojis.map((emoji, index) => (
-          <div key={index} className="relative group">
+          <div key={index} className="relative group w-32 h-32">
             <Image
               src={emoji}
               alt={`Generated emoji ${index + 1}`}
-              width={128}
-              height={128}
+              layout="fill"
+              objectFit="cover"
               className="rounded-lg"
             />
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <Button variant="secondary" size="icon" className="mr-2">
-                <DownloadIcon className="h-4 w-4" />
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-50 rounded-lg">
+              <Button
+                variant="secondary"
+                size="icon"
+                className="mr-2 bg-white text-black hover:bg-gray-200"
+                onClick={() => handleDownload(emoji)}
+              >
+                <Download className="h-4 w-4" />
               </Button>
-              <Button variant="secondary" size="icon">
-                <HeartIcon className="h-4 w-4" />
+              <Button
+                variant="secondary"
+                size="icon"
+                className="bg-white text-black hover:bg-gray-200"
+                onClick={() => handleLike(emoji)}
+              >
+                <Heart className="h-4 w-4" />
               </Button>
             </div>
           </div>
@@ -64,5 +85,3 @@ export function EmojiMaker() {
     </div>
   );
 }
-
-import { DownloadIcon, HeartIcon } from 'lucide-react';
