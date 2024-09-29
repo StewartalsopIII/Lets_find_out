@@ -5,31 +5,31 @@ import { Download, Heart } from 'lucide-react';
 import { downloadImage } from '@/lib/utils';
 
 interface EmojiItemProps {
-  emoji: { url: string; likes: number };
-  onLike: (newLikes: number) => void;
+  emoji: { id: number; image_url: string; prompt: string; likes_count: number };
+  onLike: (id: number, newLikes: number) => void;
 }
 
 export const EmojiItem: React.FC<EmojiItemProps> = ({ emoji, onLike }) => {
   const [isLiked, setIsLiked] = useState(false);
-  const [localLikes, setLocalLikes] = useState(emoji.likes);
+  const [localLikes, setLocalLikes] = useState(emoji.likes_count);
 
   const handleDownload = () => {
     const fileName = `emoji_${Date.now()}.png`;
-    downloadImage(emoji.url, fileName);
+    downloadImage(emoji.image_url, fileName);
   };
 
   const handleLike = () => {
     const newLikes = isLiked ? localLikes - 1 : localLikes + 1;
     setIsLiked(!isLiked);
     setLocalLikes(newLikes);
-    onLike(newLikes);
+    onLike(emoji.id, newLikes);
   };
 
   return (
     <div className="emoji-item">
       <Image
-        src={emoji.url}
-        alt="Generated emoji"
+        src={emoji.image_url}
+        alt={emoji.prompt}
         layout="fill"
         objectFit="cover"
       />

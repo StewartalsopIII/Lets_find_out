@@ -8,7 +8,7 @@ import { EmojiGrid } from './EmojiGrid';
 
 export function EmojiMaker() {
   const [prompt, setPrompt] = useState('');
-  const [generatedEmojis, setGeneratedEmojis] = useState<Array<{ url: string; likes: number }>>([]);
+  const [generatedEmojis, setGeneratedEmojis] = useState<Array<{ id: number; image_url: string; prompt: string; likes_count: number }>>([]);
   const [isGenerating, setIsGenerating] = useState(false);
 
   const generateEmoji = useCallback(async () => {
@@ -27,7 +27,11 @@ export function EmojiMaker() {
       }
 
       const data = await response.json();
-      setGeneratedEmojis((prevEmojis) => [{ url: data.output[0], likes: 0 }, ...prevEmojis]);
+      if (data.success && data.emoji) {
+        setGeneratedEmojis((prevEmojis) => [data.emoji, ...prevEmojis]);
+      } else {
+        throw new Error(data.error || 'Failed to generate emoji');
+      }
     } catch (error) {
       console.error('Error generating emoji:', error);
     } finally {
@@ -40,10 +44,10 @@ export function EmojiMaker() {
     console.log('Downloading:', url);
   }, []);
 
-  const handleLike = useCallback((index: number, newLikes: number) => {
+  const handleLike = useCallback((id: number, newLikes: number) => {
     setGeneratedEmojis((prevEmojis) =>
-      prevEmojis.map((emoji, i) =>
-        i === index ? { ...emoji, likes: newLikes } : emoji
+      prevEmojis.map((emoji) =>
+        emoji.id === id ? { ...emoji, likes_count: newLikes } : emoji
       )
     );
   }, []);
@@ -68,8 +72,8 @@ export function EmojiMaker() {
         <div className="mb-8">
           <div className="relative w-64 h-64 mx-auto">
             <Image
-              src={latestEmoji.url}
-              alt="Latest generated emoji"
+              src={latestEmoji.image_url}
+              alt={latestEmoji.prompt}
               layout="fill"
               objectFit="cover"
               className="rounded-lg"
